@@ -9,14 +9,21 @@ const Part = (props) => {
   console.log("Part", props);
   return (
     <div>
-      <p>{props.parts}</p>
+      <p>{props.part.name}</p>
+      <p>{props.part.parts}</p>
     </div>
   );
 };
 
 const Content = (props) => {
   console.log("Content", props);
-  return <Part parts={props.parts} />;
+  return (
+    <>
+      <Part part={props.parts[0]} />
+      <Part part={props.parts[1]} />
+      <Part part={props.parts[2]} />
+    </>
+  );
 };
 
 const Total = (props) => {
@@ -45,11 +52,16 @@ const App = () => {
       },
     ],
   };
+
+  const total =
+    course.parts[0].exercices +
+    course.parts[1].exercices +
+    course.parts[2].exercices;
   return (
     <div>
       <Header course={course.name} />
-      <Content course={course.parts} />
-      {/* <Total partscourse={parts} /> */}
+      <Content parts={course.parts} />
+      <Total total={total} />
     </div>
   );
 };
