@@ -16,6 +16,7 @@ const App = () => {
   return (
     <div style={{ margin: "20px" }}>
       <div>{anecdotes[selected]}</div>
+      <button>vote</button>
       <button
         onClick={() => {
           const random = Math.floor(Math.random() * anecdotes.length);
