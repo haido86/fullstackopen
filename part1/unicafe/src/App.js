@@ -7,23 +7,26 @@ const Statistics = (props) => {
   const all = good + neutral + bad;
   let average;
   let positive;
-  if (all === 0) {
-    average = 0;
-    positive = 0;
-  } else {
+  if (all !== 0) {
     average = (good * 1 + neutral * 0 + bad * -1) / all;
     positive = (good / all) * 100;
   }
 
   return (
     <div>
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {all}</p>
-      <p>average {average}</p>
-      <p>positive {positive} %</p>
+      <h1>Statistics</h1>
+      {all === 0 ? (
+        <p>No feedback given</p>
+      ) : (
+        <>
+          <p>good {good}</p>
+          <p>neutral {neutral}</p>
+          <p>bad {bad}</p>
+          <p>all {all}</p>
+          <p>average {average}</p>
+          <p>positive {positive} %</p>
+        </>
+      )}
     </div>
   );
 };
@@ -42,7 +45,6 @@ function App() {
         <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
         <button onClick={() => setBad(bad + 1)}>bad</button>
       </div>
-
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   );
