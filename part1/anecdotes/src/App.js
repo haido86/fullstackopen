@@ -12,11 +12,21 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [vote, setVote] = useState([]);
+
+  const handleOnVote = () => {
+    const copy = [...vote];
+    copy[selected] = (copy[selected] || 0) + 1;
+
+    setVote(copy);
+  };
 
   return (
     <div style={{ margin: "20px" }}>
       <div>{anecdotes[selected]}</div>
-      <button>vote</button>
+      <div>has {vote[selected] || 0} vote</div>
+
+      <button onClick={handleOnVote}>vote</button>
       <button
         onClick={() => {
           const random = Math.floor(Math.random() * anecdotes.length);
