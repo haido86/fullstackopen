@@ -27,21 +27,67 @@ const Statistics = (props) => {
   }
 
   return (
-    <div>
+    <>
       <h1>Statistics</h1>
       {all === 0 ? (
         <p>No feedback given</p>
       ) : (
         <>
-          <StatisticLine text="good" value={good} />
-          <StatisticLine text="neutral" value={neutral} />
-          <StatisticLine text="bad" value={bad} />
-          <StatisticLine text="all" value={all} />
-          <StatisticLine text="average" value={average} />
-          <StatisticLine text="positive" value={positive} showPercent={true} />
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <StatisticLine text="good" />
+                </td>
+                <td>
+                  <StatisticLine value={good} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <StatisticLine text="neutral" />
+                </td>
+                <td>
+                  <StatisticLine value={neutral} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <StatisticLine text="bad" />
+                </td>
+                <td>
+                  <StatisticLine value={bad} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <StatisticLine text="all" />
+                </td>
+                <td>
+                  <StatisticLine value={all} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <StatisticLine text="average" />
+                </td>
+                <td>
+                  <StatisticLine value={average} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <StatisticLine text="positive" />
+                </td>
+                <td>
+                  <StatisticLine value={positive} showPercent={true} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </>
       )}
-    </div>
+    </>
   );
 };
 
