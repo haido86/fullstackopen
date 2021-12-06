@@ -13,16 +13,23 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [vote, setVote] = useState([]);
+  const [maxVote, setMaxVote] = useState({
+    index: 0,
+    numberOfVote: 0,
+  });
 
   const handleOnVote = () => {
     const copy = [...vote];
     copy[selected] = (copy[selected] || 0) + 1;
-
+    if (copy[selected] > maxVote.numberOfVote) {
+      setMaxVote({ index: selected, numberOfVote: copy[selected] });
+    }
     setVote(copy);
   };
 
   return (
     <div style={{ margin: "20px" }}>
+      <h1>Anecdotes of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {vote[selected] || 0} vote</div>
 
@@ -35,6 +42,9 @@ const App = () => {
       >
         next anecdotes
       </button>
+      <h1>Anecdotes with the most votes </h1>
+      <div>{anecdotes[maxVote.index]}</div>
+      <div>has {maxVote.numberOfVote} vote</div>
     </div>
   );
 };
