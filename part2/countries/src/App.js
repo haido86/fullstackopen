@@ -32,9 +32,26 @@ const App = () => {
       </form>
       <div>
         {countriesFilter.length <= 10
-          ? countriesFilter.map((filterCountry) => (
-              <p key={filterCountry.name.common}>{filterCountry.name.common}</p>
-            ))
+          ? countriesFilter.map((filterCountry) =>
+              countriesFilter.length === 1 ? (
+                <div key={filterCountry.name.common} style={{ margin: "20px" }}>
+                  <h1>{filterCountry.name.common}</h1>
+                  <p>capital {filterCountry.capital}</p>
+                  <p>population {filterCountry.population}</p>
+                  <p>
+                    languages{" "}
+                    {Object.values(filterCountry.languages).map((language) => (
+                      <li>{language}</li>
+                    ))}
+                  </p>
+                  <img src={filterCountry.flags.png} width="200px" alt="flag" />
+                </div>
+              ) : (
+                <p key={filterCountry.name.common}>
+                  {filterCountry.name.common}
+                </p>
+              )
+            )
           : filter.length > 0 && "Too many matches, specify another filter"}
       </div>
     </>
