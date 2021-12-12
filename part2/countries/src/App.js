@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import CountryDetail from "./components/CountryDetail";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState("");
+  const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all").then((response) => {
@@ -24,6 +26,8 @@ const App = () => {
     country.name.common.toLowerCase().includes(filter)
   );
 
+  console.log("showDetail", showDetail);
+
   return (
     <>
       <div style={{ margin: "20px" }}>find countries</div>
@@ -34,25 +38,31 @@ const App = () => {
         {countriesFilter.length <= 10
           ? countriesFilter.map((filterCountry) =>
               countriesFilter.length === 1 ? (
-                <div key={filterCountry.name.common} style={{ margin: "20px" }}>
-                  <h1>{filterCountry.name.common}</h1>
-                  <p>capital {filterCountry.capital}</p>
-                  <p>population {filterCountry.population}</p>
-                  <p>
-                    languages{" "}
-                    {Object.values(filterCountry.languages).map((language) => (
-                      <li>{language}</li>
-                    ))}
-                  </p>
-                  <img src={filterCountry.flags.png} width="200px" alt="flag" />
-                </div>
+                <CountryDetail
+                  key={filterCountry.name.common}
+                  filterCountry={filterCountry}
+                />
               ) : (
                 <p key={filterCountry.name.common}>
-                  {filterCountry.name.common}
+                  {filterCountry.name.common}{" "}
+                  <button
+                    onClick={() => setShowDetail(filterCountry.name.common)}
+                  >
+                    show
+                  </button>
                 </p>
               )
             )
           : filter.length > 0 && "Too many matches, specify another filter"}
+        {showDetail &&
+          countriesFilter
+            .filter((country) => country.name.common === showDetail)
+            .map((filterCountry) => (
+              <CountryDetail
+                key={filterCountry.name.common}
+                filterCountry={filterCountry}
+              />
+            ))}
       </div>
     </>
   );
