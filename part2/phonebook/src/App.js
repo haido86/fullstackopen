@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-
 import personsInfo from "./services/personsInfo";
 
 const App = () => {
@@ -70,6 +69,16 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const handleDeletePerson = (id) => {
+    const deletedPerson = persons.find((person) => person.id === id);
+
+    if (window.confirm(`Delete ${deletedPerson.name}?`)) {
+      personsInfo.eliminate(id).then((returnedPerson) => {
+        setPersons(persons.filter((p) => p.id !== id));
+      });
+    }
+  };
+
   return (
     <div style={{ margin: "20px" }}>
       <h2>Phonebook!</h2>
@@ -88,7 +97,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons
+        persons={persons}
+        filter={filter}
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   );
 };
