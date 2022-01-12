@@ -16,5 +16,10 @@ const eliminate = (id) => {
   return request.then((response) => response.data);
 };
 
+const update = (id, newNumber) => {
+  const request = axios.put(`${baseUrl}/${id}`, newNumber);
+  return request.then((response) => response.data);
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, eliminate };
+export default { getAll, create, eliminate, update };

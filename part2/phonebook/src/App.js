@@ -11,13 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log("effect");
     personsInfo.getAll().then((initialPersons) => {
-      console.log("promise fulfilled");
       setPersons(initialPersons);
     });
   }, []);
-  console.log("render", persons.length, "persons");
 
   const addFilter = (event) => {
     event.preventDefault();
@@ -30,14 +27,6 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    const isDuplicate =
-      persons.find((person) => person.name === newName) !== undefined;
-
-    if (isDuplicate) {
-      window.alert(`${newName} is already added to phonebook`);
-      return;
-    }
-
     if (newName === "") {
       window.alert(`Name cannot be empty`);
       return;
@@ -48,10 +37,37 @@ const App = () => {
       return;
     }
 
+    const personDuplicate = persons.find((person) => person.name === newName);
+
+    if (personDuplicate) {
+      window.alert(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      {
+        const changedPerson = {
+          ...personDuplicate,
+          number: newNumber,
+        };
+
+        personsInfo
+          .update(personDuplicate.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== personDuplicate.id ? person : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          });
+      }
+      return;
+    }
+
     const person = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
+      id: newName,
     };
 
     personsInfo.create(person).then((returnedPerson) => {
