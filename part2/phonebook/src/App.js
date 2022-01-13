@@ -3,12 +3,14 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personsInfo from "./services/personsInfo";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsInfo.getAll().then((initialPersons) => {
@@ -57,9 +59,13 @@ const App = () => {
                 person.id !== personDuplicate.id ? person : returnedPerson
               )
             );
-            setNewName("");
-            setNewNumber("");
+            setErrorMessage(`${newName}'s phone number is changed`);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
           });
+        setNewName("");
+        setNewNumber("");
       }
       return;
     }
@@ -72,9 +78,14 @@ const App = () => {
 
     personsInfo.create(person).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setNewNumber("");
+      setErrorMessage(`Added ${person.name}`);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
     });
+
+    setNewName("");
+    setNewNumber("");
   };
 
   const handleNameChange = (event) => {
@@ -98,6 +109,7 @@ const App = () => {
   return (
     <div style={{ margin: "20px" }}>
       <h2>Phonebook!</h2>
+      <Notification message={errorMessage} />
       <Filter
         filter={filter}
         setFilter={setFilter}
