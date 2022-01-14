@@ -39,7 +39,9 @@ const App = () => {
       return;
     }
 
-    const personDuplicate = persons.find((person) => person.name === newName);
+    const personDuplicate = persons.find(
+      (person) => person.name.trim() === newName.trim()
+    );
 
     if (personDuplicate) {
       window.alert(
@@ -63,7 +65,19 @@ const App = () => {
             setTimeout(() => {
               setErrorMessage(null);
             }, 5000);
+          })
+          .catch((error) => {
+            setErrorMessage(
+              `Information of ${newName} has already been removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            setPersons(
+              persons.filter((person) => person.id !== personDuplicate.id)
+            );
           });
+
         setNewName("");
         setNewNumber("");
       }
@@ -73,7 +87,7 @@ const App = () => {
     const person = {
       name: newName,
       number: newNumber,
-      id: newName,
+      id: Math.random(),
     };
 
     personsInfo.create(person).then((returnedPerson) => {
