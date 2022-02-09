@@ -39,6 +39,53 @@ const App = () => {
       return;
     }
 
+    const personDuplicate = persons.find(
+      (person) =>
+        person.name.trim().toLowerCase() === newName.trim().toLowerCase()
+    );
+
+    if (personDuplicate) {
+      window.alert(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      {
+        const changedPerson = {
+          ...personDuplicate,
+          number: newNumber,
+        };
+
+        personsInfo
+          .update(personDuplicate.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== personDuplicate.id ? person : returnedPerson
+              )
+            );
+            setErrorMessage(`${newName}'s phone number is changed`);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+          })
+          .catch((error) => {
+            console.log("error", error);
+            setErrorMessage(
+              `Information of ${newName} has already been removed from server`
+            );
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 5000);
+            setPersons(
+              persons.filter((person) => person.id !== personDuplicate.id)
+            );
+          });
+
+        setNewName("");
+        setNewNumber("");
+      }
+      return;
+    }
+
     const person = {
       name: newName,
       number: newNumber,
