@@ -29,10 +29,10 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (newName === "") {
-      window.alert(`Name cannot be empty`);
-      return;
-    }
+    // if (newName === "") {
+    //   window.alert(`Name cannot be empty`);
+    //   return;
+    // }
 
     if (newNumber === "") {
       window.alert(`Phone number cannot be empty`);
@@ -92,13 +92,22 @@ const App = () => {
       id: Math.random(),
     };
 
-    personsInfo.create(person).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setErrorMessage(`Added ${person.name}`);
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    });
+    personsInfo
+      .create(person)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setErrorMessage(`Added ${person.name}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      })
+      .catch((error) => {
+        const responseErrorMessage = error.response.data.error;
+        setErrorMessage(`${responseErrorMessage}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      });
 
     setNewName("");
     setNewNumber("");

@@ -6,7 +6,11 @@ const Notification = ({ message }) => {
   return (
     <div
       className="error"
-      style={message.includes("remove") ? { color: "red" } : {}}
+      style={
+        message.includes("remove") || message.includes("failed")
+          ? { color: "red" }
+          : {}
+      }
     >
       {message}
     </div>
