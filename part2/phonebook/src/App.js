@@ -29,63 +29,6 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    // if (newName === "") {
-    //   window.alert(`Name cannot be empty`);
-    //   return;
-    // }
-
-    if (newNumber === "") {
-      window.alert(`Phone number cannot be empty`);
-      return;
-    }
-
-    const personDuplicate = persons.find(
-      (person) =>
-        person.name.trim().toLowerCase() === newName.trim().toLowerCase()
-    );
-
-    if (personDuplicate) {
-      window.alert(
-        `${newName} is already added to phonebook, replace the old number with a new one?`
-      );
-      {
-        const changedPerson = {
-          ...personDuplicate,
-          number: newNumber,
-        };
-
-        personsInfo
-          .update(personDuplicate.id, changedPerson)
-          .then((returnedPerson) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== personDuplicate.id ? person : returnedPerson
-              )
-            );
-            setErrorMessage(`${newName}'s phone number is changed`);
-            setTimeout(() => {
-              setErrorMessage(null);
-            }, 5000);
-          })
-          .catch((error) => {
-            console.log("error", error);
-            setErrorMessage(
-              `Information of ${newName} has already been removed from server`
-            );
-            setTimeout(() => {
-              setErrorMessage(null);
-            }, 5000);
-            setPersons(
-              persons.filter((person) => person.id !== personDuplicate.id)
-            );
-          });
-
-        setNewName("");
-        setNewNumber("");
-      }
-      return;
-    }
-
     const person = {
       name: newName,
       number: newNumber,
@@ -95,6 +38,7 @@ const App = () => {
     personsInfo
       .create(person)
       .then((returnedPerson) => {
+        console.log("returnedPerson", returnedPerson);
         setPersons(persons.concat(returnedPerson));
         setErrorMessage(`Added ${person.name}`);
         setTimeout(() => {
@@ -103,6 +47,7 @@ const App = () => {
       })
       .catch((error) => {
         const responseErrorMessage = error.response.data.error;
+        console.log("error", responseErrorMessage);
         setErrorMessage(`${responseErrorMessage}`);
         setTimeout(() => {
           setErrorMessage(null);
