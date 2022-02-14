@@ -38,7 +38,6 @@ const App = () => {
     personsInfo
       .create(person)
       .then((returnedPerson) => {
-        console.log("returnedPerson", returnedPerson);
         setPersons(persons.concat(returnedPerson));
         setErrorMessage(`Added ${person.name}`);
         setTimeout(() => {
@@ -47,7 +46,6 @@ const App = () => {
       })
       .catch((error) => {
         const responseErrorMessage = error.response.data.error;
-        console.log("error", responseErrorMessage);
         setErrorMessage(`${responseErrorMessage}`);
         setTimeout(() => {
           setErrorMessage(null);
